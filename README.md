@@ -1,57 +1,57 @@
 # EpiCodi
 
-EpiCodi est une application web développée avec React et Vite, utilisant Tailwind CSS pour le style. Ce projet permet de gérer des playlists M3U, d'afficher des films, séries et chaînes TV, et d'interagir avec une base de données locale pour stocker des informations utilisateur.
+EpiCodi is a web application developed with React and Vite, using Tailwind CSS for styling. This project allows you to manage M3U playlists, display movies, series, and TV channels, and interact with a local database to store user information.
 
-## Fonctionnalités
+## Features
 
-- **Gestion de Playlists M3U** : Téléchargez et importez des fichiers M3U pour gérer vos médias.
-- **Affichage de Contenus** : Parcourez et visionnez des films, séries et chaînes TV.
-- **Base de Données Locale** : Utilisation d'IndexedDB pour stocker des données utilisateur telles que l'historique de visionnage et la liste de favoris.
-- **Recommandations** : Obtenez des recommandations basées sur les médias consultés.
-- **Personnalisation de Profil** : Changez votre avatar et gérez votre liste de favoris.
+- **M3U Playlist Management**: Download and import M3U files to manage your media.
+- **Content Display**: Browse and watch movies, series, and TV channels.
+- **Local Database**: Uses IndexedDB to store user data such as viewing history and favorites list.
+- **Recommendations**: Get recommendations based on viewed media.
+- **Profile Customization**: Change your avatar and manage your favorites list.
 
 ## Installation
 
-1. Clonez le dépôt :   ```bash
-   git clone https://github.com/votre-utilisateur/EpiCodi.git
+1. Clone the repository:   ```bash
+   git clone https://github.com/your-username/EpiCodi.git
    cd EpiCodi/codi   ```
 
-2. Installez les dépendances :   ```bash
+2. Install dependencies:   ```bash
    npm install   ```
 
-3. Démarrez le serveur de développement :   ```bash
+3. Start the development server:   ```bash
    npm run vite:start   ```
 
-4. Accédez à l'application via [http://localhost:3000](http://localhost:3000).
+4. Access the application via [http://localhost:3000](http://localhost:3000).
 
-## Scripts Disponibles
+## Available Scripts
 
-- `npm run vite:start` : Démarre l'application en mode développement.
-- `npm run vite:build` : Construit l'application pour la production.
-- `npm run vite:preview` : Prévisualise l'application construite.
+- `npm run vite:start`: Starts the application in development mode.
+- `npm run vite:build`: Builds the application for production.
+- `npm run vite:preview`: Previews the built application.
 
 ## Configuration
 
-- **Vite** : Configuration du serveur et des plugins dans `vite.config.ts`.
-- **Tailwind CSS** : Configuration des styles dans `tailwind.config.js`.
+- **Vite**: Server and plugin configuration in `vite.config.ts`.
+- **Tailwind CSS**: Style configuration in `tailwind.config.js`.
 
-## Structure du Projet
+## Project Structure
 
-- **src/pages** : Contient les pages principales de l'application comme `login`, `homepage`, `details`, `user`, et `searching`.
-- **src/components** : Composants réutilisables de l'application.
-- **public** : Fichiers statiques et manifestes.
+- **src/pages**: Contains the main pages of the application such as `login`, `homepage`, `details`, `user`, and `searching`.
+- **src/components**: Reusable components of the application.
+- **public**: Static files and manifests.
 
-## Dépendances Principales
+## Main Dependencies
 
 - React
 - Vite
 - Tailwind CSS
 - IndexedDB (via `idb`)
 
-## Contribuer
+## Contributing
 
-Les contributions sont les bienvenues ! Veuillez soumettre une pull request ou ouvrir une issue pour discuter des changements que vous souhaitez apporter.
+Contributions are welcome! Please submit a pull request or open an issue to discuss the changes you wish to make.
 
-## Licence
+## License
 
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
