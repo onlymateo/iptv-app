@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react';
+import React from 'react';
 import { X } from 'lucide-react';
 import ReactPlayer from 'react-player';
-import Hls from 'hls.js';
 
 interface VideoPlayerProps {
   uri: string;
@@ -10,28 +9,6 @@ interface VideoPlayerProps {
 }
 
 export function VideoPlayer({ uri, onClose, title }: VideoPlayerProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (Hls.isSupported() && videoRef.current) {
-      const hls = new Hls({
-        enableWorker: true,
-        lowLatencyMode: true,
-        backBufferLength: 90
-      });
-      
-      hls.loadSource(uri);
-      hls.attachMedia(videoRef.current);
-      
-      hls.on(Hls.Events.ERROR, (event, data) => {
-        console.error('Erreur HLS:', data);
-      });
-
-      return () => {
-        hls.destroy();
-      };
-    }
-  }, [uri]);
 
   return (
     <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
@@ -46,14 +23,6 @@ export function VideoPlayer({ uri, onClose, title }: VideoPlayerProps) {
         </button>
 
         <div className="relative w-full h-full flex items-center justify-center">
-          {Hls.isSupported() ? (
-            <video
-              ref={videoRef}
-              controls
-              autoPlay
-              className="w-full h-full"
-            />
-          ) : (
             <ReactPlayer
               url={uri}
               controls
@@ -69,7 +38,6 @@ export function VideoPlayer({ uri, onClose, title }: VideoPlayerProps) {
               }}
               onError={(e) => console.error('Erreur de lecture ReactPlayer:', e)}
             />
-          )}
         </div>
       </div>
     </div>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { getHistory, getWatchlist, removeFromWatchlist, setProfilePicture, getProfilePicture } from '../../components/parsem3u';
+import { getHistory, getWatchlist, removeFromWatchlist, setProfilePicture, getProfilePicture } from '../../components/parsem3u'
+import React from 'react'
 
 interface InterfaceMedia {
   category: string;
@@ -79,7 +80,7 @@ function UserPage() {
 
   return (
     <div className="bg-black text-white min-h-screen">
-      <nav className="flex items-center justify-between p-4 bg-black bg-opacity-90 fixed top-0 w-full z-50">
+      <nav className="flex flex-row items-center justify-between p-4 bg-black bg-opacity-90 fixed top-0 w-full z-50">
         <div className="flex flex-row items-center">
           <div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={() => navigate('/user')}>
             <img src={selectedAvatar} alt="Profile" className="w-12 h-11 rounded-full mr-3" />
@@ -90,13 +91,10 @@ function UserPage() {
         </div>
 
         <div className="flex space-x-4 align-center justify-center">
-          {/*<div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={() => setCategory("TV")}>TV Shows</div>
-          <div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={() => setCategory("Movies")}>Movies</div>
-          <div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={() => setCategory("Series")}>Series</div>*/}
           <input
             type="text"
             placeholder="Search" 
-            className="bg-black text-white p-2 rounded border"
+            className="hidden md:block bg-black text-white p-2 rounded border"
             value={movieresearch}
             onChange={(e) => setMovieResearch(e.target.value)}
             onKeyDown={(e) => {
@@ -105,23 +103,29 @@ function UserPage() {
               }
             }}
           />
+          <button
+            className="block md:hidden p-2"
+            onClick={() => navigate('/search', { state: { searchQuery: movieresearch } })}
+          >
+            <img src="/loupe.png" alt="Search" className="w-6 h-6" />
+          </button>
         </div>
       </nav>
 
-      <div className="pt-24 px-8">
-        <div className="flex items-center space-x-8 mb-12">
+      <div className="pt-24 px-4 md:px-8">
+        <div className="flex flex-col md:flex-row items-center space-x-0 md:space-x-8 mb-12">
           <img 
             src={selectedAvatar} 
             alt="Profile" 
-            className="w-32 h-32 rounded-full border-4 border-red-600"
+            className="w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded-full border-4 border-red-600"
           />
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 mt-4 md:mt-0">
             {avatars.map((avatar, index) => (
               <img
                 key={index}
                 src={avatar}
                 alt={`Avatar ${index + 1}`}
-                className={`w-16 h-16 rounded-full cursor-pointer transition-all 
+                className={`w-12 h-12 md:w-16 md:h-16 rounded-full cursor-pointer transition-all 
                   ${selectedAvatar === avatar ? 'border-4 border-red-600' : 'opacity-50 hover:opacity-100'}`}
                 onClick={() => handleAvatarChange(avatar)}
               />
@@ -130,7 +134,7 @@ function UserPage() {
         </div>
 
         {/* Ma Liste */}
-        <div className="mt-8 px-4 pb-5">
+        <div className="mt-8 px-2 md:px-4 pb-5">
           <h2 className="text-2xl font-semibold mb-4 text-left ml-2">Ma Liste</h2>
           <div className="relative">
             {myList.length > 0 ? (
@@ -141,9 +145,9 @@ function UserPage() {
                 >
                   <ChevronLeft />
                 </button>
-                <div className="flex space-x-4 overflow-hidden">
+                <div className="flex space-x-4 overflow-x-auto">
                   {myList.slice(currentRowMyList, currentRowMyList + 13).map((item, index) => (
-                    <div key={index} className="flex-none w-[200px] cursor-pointer">
+                    <div key={index} className="flex-none w-[150px] md:w-[200px] cursor-pointer">
                       <div className="h-[full] rounded-md relative group">
                         <img 
                           src={item.logo || '/placeholder.svg?height=169&width=300'} 
@@ -172,13 +176,13 @@ function UserPage() {
                 </button>
               </>
             ) : (
-              <div className="w-[200px] h-[300px] bg-gray-700 rounded-md"></div>
+              <div className="w-[150px] md:w-[200px] h-[200px] md:h-[300px] bg-gray-700 rounded-md"></div>
             )}
           </div>
         </div>
 
         {/* Historique */}
-        <div className="mt-8 px-4 pb-5">
+        <div className="mt-8 px-2 md:px-4 pb-5">
           <h2 className="text-2xl font-semibold mb-4 text-left ml-2">Historique</h2>
           <div className="relative">
             {history.length > 0 ? (
@@ -189,9 +193,9 @@ function UserPage() {
                 >
                   <ChevronLeft />
                 </button>
-                <div className="flex space-x-4 overflow-hidden">
+                <div className="flex space-x-4 overflow-x-auto">
                   {history.slice(currentRowHistory, currentRowHistory + 13).map((item, index) => (
-                    <div key={index} className="flex-none w-[200px] cursor-pointer">
+                    <div key={index} className="flex-none w-[150px] md:w-[200px] cursor-pointer">
                       <div className="h-[full] rounded-md relative group">
                         <img 
                           src={item.logo || '/placeholder.svg?height=169&width=300'} 
@@ -217,7 +221,7 @@ function UserPage() {
                 </button>
               </>
             ) : (
-              <div className="w-[200px] h-[300px] bg-gray-700 rounded-md"></div>
+              <div className="w-[150px] md:w-[200px] h-[200px] md:h-[300px] bg-gray-700 rounded-md"></div>
             )}
           </div>
         </div>

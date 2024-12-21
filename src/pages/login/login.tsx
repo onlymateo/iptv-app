@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import { getContentFromIndexedDB, parseM3UContent, storeContentInIndexedDB } from '../../components/parsem3u'
+import { useState } from 'react'
+import { parseM3UContent, storeContentInIndexedDB } from '../../components/parsem3u'
+import React from 'react'
 
 function LoginPage() {
   const [link, setLink] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
   const [downloading, setDownloading] = useState(false)
-  const [progress, setProgress] = useState(0)
   const [error, setError] = useState('')
   const [downloadPhase, setDownloadPhase ] = useState('')
 
@@ -13,7 +13,6 @@ function LoginPage() {
     e.preventDefault();
     setError('');
     setDownloading(true);
-    setProgress(0);
 
     try {
       new URL(link);
