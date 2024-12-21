@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-///import Link from 'next/link'
-import { Search, Filter, ChevronDown } from 'lucide-react'
+import { useEffect, useState, useCallback } from 'react'
+import React from 'react' 
+import { Search, ChevronDown } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { getProfilePicture } from '../../components/parsem3u';
 
@@ -22,15 +22,10 @@ export default function SearchPage({ movies, series, tvChannels }: { movies: any
   const [selectedAvatar, setSelectedAvatar] = useState('/profilepictures/1.jpg')
 
   const genres = ['All', 'TV Channels', 'Movies', 'Series']
-
-  const handleBack = () => {
-    navigate('/homepage')
-  }
-
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 24 // 6 colonnes x 4 lignes
 
-  const handleSearch = (genre: string) => {
+  const handleSearch = useCallback((genre: string) => {
     const filteredResults = (() => {
       const query = searchQuery.toLowerCase()
       let results: Media[] = []
@@ -68,7 +63,7 @@ export default function SearchPage({ movies, series, tvChannels }: { movies: any
     })()
 
     setSearchResults(filteredResults)
-  }
+  }, [searchQuery, movies, series, tvChannels])
     
   const fetchAvatar = async () => {
     const avatar = await getProfilePicture();
@@ -77,8 +72,8 @@ export default function SearchPage({ movies, series, tvChannels }: { movies: any
 
   useEffect(() => {
     fetchAvatar();
-    handleSearch(selectedGenre)
-  }, [])
+    handleSearch(selectedGenre);
+  }, [handleSearch, selectedGenre]);
 
   // Calcul de la pagination
   const totalPages = Math.ceil(searchResults.length / itemsPerPage)

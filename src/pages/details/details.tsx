@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom';
 import { openDB } from 'idb';
-
+import React from 'react';
 import { useState, useEffect } from 'react'
-import { Play, Plus, ThumbsUp, Volume2, VolumeX, X } from 'lucide-react'
+import { Play, Plus, ThumbsUp, X } from 'lucide-react'
 import { VideoPlayer } from '../../components/VideoPlayer';
-import { addToWatchlist, isInWatchlist, removeFromWatchlist, addToHistory, getProfilePicture, fetchTMDBData, fetchTMDBRecommendations } from '../../components/parsem3u';
+import { addToWatchlist, isInWatchlist, removeFromWatchlist, addToHistory, getProfilePicture, fetchTMDBData, fetchTMDBRecommendations } from '../../components/parsem3u.ts';
 
 interface MovieDetailProps {
   id: number;
@@ -16,7 +16,6 @@ interface MovieDetailProps {
 
 function MovieDetail() {
   const location = useLocation();
-  const [isMuted, setIsMuted] = useState(true)
   const [isPlaying, setIsPlaying] = useState(false)
   const { id, uri, category, logo } = location.state as MovieDetailProps;
   console.log(id, uri, category, logo)
@@ -150,7 +149,7 @@ function MovieDetail() {
   return (
     <div className="bg-black text-white min-h-screen">
       {/* Navigation Bar */}
-      <nav className="flex items-center justify-between p-4 bg-black bg-opacity-90 fixed top-0 w-full z-50">
+      <nav className="flex flex-row items-center justify-between p-4 bg-black bg-opacity-90 fixed top-0 w-full z-50">
         <div className="flex flex-row items-center">
           <div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={() => navigate('/user')}>
             <img src={selectedAvatar} alt="Profile" className="w-12 h-11 rounded-full mr-3" />
@@ -159,14 +158,12 @@ function MovieDetail() {
             NETFLOUZ
           </div>
         </div>
+
         <div className="flex space-x-4 align-center justify-center">
-          {/*<div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={handleBack}>TV Shows</div>
-          <div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={handleBack}>Movies</div>
-          <div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={handleBack}>Series</div>*/}
           <input
             type="text"
             placeholder="Search" 
-            className="bg-black text-white p-2 rounded border"
+            className="hidden md:block bg-black text-white p-2 rounded border"
             value={movieresearch}
             onChange={(e) => setMovieResearch(e.target.value)}
             onKeyDown={(e) => {
@@ -174,13 +171,16 @@ function MovieDetail() {
                 handleSearch()
               }
             }}
-            onBlur={() => {
-              handleSearch()
-            }}
           />
+          <button
+            className="block md:hidden p-2"
+            onClick={() => navigate('/search', { state: { searchQuery: movieresearch } })}
+          >
+            <img src="/loupe.png" alt="Search" className="w-6 h-6" />
+          </button>
         </div>
       </nav>
-
+      
       {isPlaying && (
         <VideoPlayer 
           uri={uri}
@@ -191,11 +191,17 @@ function MovieDetail() {
 
       {/* Movie Banner */}
       <div className="relative pt-16">
-        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
-        <img src={logo} alt={logo} className="w-full h-[56.25vw] object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent"></div>
+        <img 
+          src={logo} 
+          alt={logo} 
+          className="w-full h-[90vh] md:h-[500px] object-cover"
+        />
         <div className="absolute bottom-0 left-0 p-8 w-full">
-          <h1 className="text-5xl font-bold mb-4">{category}</h1>
-          <div className="flex space-x-4 mb-4">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4">
+            {category}
+          </h1>
+          <div className="flex flex-row space-x-4">
             <button 
               className="bg-white text-black hover:bg-gray-200 rounded flex flex-row p-4 pb-2 pt-2"
               onClick={handlePlay}
@@ -205,7 +211,7 @@ function MovieDetail() {
             </button>
             <button className="bg-white text-black hover:bg-gray-200 rounded flex flex-row p-4 pb-2 pt-2" onClick={handleSetToMylist}>
               {isInList ? <X className="mr-2" /> : <Plus className="mr-2" />}
-              My List
+              List
             </button>
             <button className="bg-white text-black hover:bg-gray-200 rounded flex flex-row p-4 pb-2 pt-2">
               <ThumbsUp className="mr-2" />
@@ -215,19 +221,12 @@ function MovieDetail() {
           <div className="flex items-center space-x-4 text-sm">
             <span className="text-green-500 font-semibold">{movieDetails?.vote_average ? movieDetails.vote_average + " / 10" : "Non disponible"}</span>
             <span>{movieDetails?.release_date ? new Date(movieDetails.release_date).toLocaleDateString('fr-FR') : "Non disponible"}</span>
-            <button
-              className="bg-white text-black hover:bg-gray-200 rounded flex flex-row p-4 pb-2 pt-2"
-              onClick={() => setIsMuted(!isMuted)}
-            >
-              {isMuted ? <VolumeX /> : <Volume2 />}
-              <span className="sr-only">{isMuted ? 'Unmute' : 'Mute'}</span>
-            </button>
           </div>
         </div>
       </div>
 
       {/* Movie Details */}
-      <div className="px-8 py-12 grid grid-cols-3 gap-8">
+      <div className="px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="col-span-2">
           <p className="text-lg mb-4">Description</p>
           <div>
@@ -243,7 +242,7 @@ function MovieDetail() {
         </div>
         <div>
           <h2 className="text-2xl font-semibold mb-4">Recommandations</h2>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {tmdbRecommendations.map((movie, index) => (
               <div key={index} className="relative group">
                 <img

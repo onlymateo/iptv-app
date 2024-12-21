@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { ChevronLeft, ChevronRight, Play, Info, Plus, X } from 'lucide-react'
 import "./homepage.css"
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getContentFromIndexedDB, get2024ContentFromIndexedDB, getWatchlist, removeFromWatchlist, isInWatchlist, addToWatchlist, getProfilePicture, getRecommendations, fetchRecentMovies } from '../../components/parsem3u'
+import {getWatchlist, removeFromWatchlist, addToWatchlist, getProfilePicture, fetchRecentMovies } from '../../components/parsem3u'
 
 interface InterfaceMedia {
   category: string;
@@ -13,33 +14,12 @@ interface InterfaceMedia {
   title?: string;
 }
 
-function levenshteinDistance(str1: string, str2: string): number {
-  const track = Array(str2.length + 1).fill(null).map(() =>
-    Array(str1.length + 1).fill(null));
-
-  for (let i = 0; i <= str1.length; i++) track[0][i] = i;
-  for (let j = 0; j <= str2.length; j++) track[j][0] = j;
-
-  for (let j = 1; j <= str2.length; j++) {
-    for (let i = 1; i <= str1.length; i++) {
-      const indicator = str1[i - 1] === str2[j - 1] ? 0 : 1;
-      track[j][i] = Math.min(
-        track[j][i - 1] + 1,
-        track[j - 1][i] + 1,
-        track[j - 1][i - 1] + indicator
-      );
-    }
-  }
-
-  return 100 - (track[str2.length][str1.length] * 100 / Math.max(str1.length, str2.length));
-}
 
 function Homepage({ movies, series, tvChannels }: { movies: InterfaceMedia[], series: InterfaceMedia[], tvChannels: InterfaceMedia[] }) {
   const [currentRowMovies, setCurrentRowMovies] = useState(0)
   const [currentRowSeries, setCurrentRowSeries] = useState(0)
   const [currentRowTvChannels, setCurrentRowTvChannels] = useState(0)
   const [movieresearch, setMovieResearch] = useState('')
-  const [category, setCategory] = useState('')
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [myList, setMyList] = useState<InterfaceMedia[]>([])
@@ -183,23 +163,21 @@ function Homepage({ movies, series, tvChannels }: { movies: InterfaceMedia[], se
   return (
     <div className="bg-black text-white min-h-screen overflow-y-auto">  
       {/* Navigation Bar */}
-      <nav className="flex items-center justify-between p-4 bg-black bg-opacity-90 fixed top-0 w-full z-50">
+      <nav className="flex flex-row items-center justify-between p-4 bg-black bg-opacity-90 fixed top-0 w-full z-50">
         <div className="flex flex-row items-center">
           <div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={() => navigate('/user')}>
             <img src={selectedAvatar} alt="Profile" className="w-12 h-11 rounded-full mr-3" />
           </div>
-          <div className="text-red-600 text-4xl font-bold cursor-pointer" onClick={() => {}}>
+          <div className="text-red-600 text-4xl font-bold cursor-pointer">
             NETFLOUZ
           </div>
         </div>
+
         <div className="flex space-x-4 align-center justify-center">
-          {/*<div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={() => setCategory("TV")}>TV Shows</div>
-          <div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={() => setCategory("Movies")}>Movies</div>
-          <div className="hover:text-gray-300 cursor-pointer text-center pt-2" onClick={() => setCategory("Series")}>Series</div>*/}
           <input
             type="text"
             placeholder="Search" 
-            className="bg-black text-white p-2 rounded border"
+            className="hidden md:block bg-black text-white p-2 rounded border"
             value={movieresearch}
             onChange={(e) => setMovieResearch(e.target.value)}
             onKeyDown={(e) => {
@@ -208,6 +186,12 @@ function Homepage({ movies, series, tvChannels }: { movies: InterfaceMedia[], se
               }
             }}
           />
+          <button
+            className="block md:hidden p-2"
+            onClick={() => navigate('/search', { state: { searchQuery: movieresearch } })}
+          >
+            <img src="/loupe.png" alt="Search" className="w-6 h-6" />
+          </button>
         </div>
       </nav>
 
@@ -224,10 +208,6 @@ function Homepage({ movies, series, tvChannels }: { movies: InterfaceMedia[], se
             {movies[0]?.category.split('|')[1] || "Featured Movie"}
           </h1>
           <div className="flex space-x-4">
-            <button className="bg-white text-black hover:bg-gray-200 rounded flex flex-row p-4 pb-2 pt-2">
-              <Play className="mr-2" />
-              Play
-            </button>
             <button className="bg-white text-black hover:bg-gray-200 rounded flex flex-row p-4 pb-2 pt-2" onClick={() => handleInfo(movies[0].id, movies[0].uri, movies[0].category, movies[0].logo)}>
               <Info className="mr-2" />
               More Info

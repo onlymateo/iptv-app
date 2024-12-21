@@ -1,6 +1,6 @@
-# EpiCodi
+# IPTV app
 
-EpiCodi is a web application developed with React and Vite, using Tailwind CSS for styling. This project allows you to manage M3U playlists, display movies, series, and TV channels, and interact with a local database to store user information.
+IPTV app is a web application developed with React and Vite, using Tailwind CSS for styling. This project allows you to manage M3U playlists, display movies, series, and TV channels, and interact with a local database to store user information.
 
 ## Features
 
@@ -14,25 +14,19 @@ EpiCodi is a web application developed with React and Vite, using Tailwind CSS f
 
 1. Clone the repository:   ```bash
    git clone https://github.com/your-username/EpiCodi.git
-   cd EpiCodi/codi   ```
+   ```
 
 2. Install dependencies:   ```bash
    npm install   ```
 
 3. Start the development server:   ```bash
-   npm run vite:start   ```
+   npm start  ```
 
 4. Access the application via [http://localhost:3000](http://localhost:3000).
 
-## Available Scripts
-
-- `npm run vite:start`: Starts the application in development mode.
-- `npm run vite:build`: Builds the application for production.
-- `npm run vite:preview`: Previews the built application.
 
 ## Configuration
 
-- **Vite**: Server and plugin configuration in `vite.config.ts`.
 - **Tailwind CSS**: Style configuration in `tailwind.config.js`.
 
 ## Project Structure
@@ -44,7 +38,6 @@ EpiCodi is a web application developed with React and Vite, using Tailwind CSS f
 ## Main Dependencies
 
 - React
-- Vite
 - Tailwind CSS
 - IndexedDB (via `idb`)
 
