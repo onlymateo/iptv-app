@@ -12,8 +12,9 @@ IPTV app is a web application developed with React and Vite, using Tailwind CSS 
 
 ## Installation
 
-1. Clone the repository:   ```bash
-   git clone https://github.com/your-username/EpiCodi.git
+1. Clone the repository:   
+   ```bash 
+   git clone git@github.com:onlymateo/iptv-app.git
    ```
 
 2. Install dependencies:   ```bash
